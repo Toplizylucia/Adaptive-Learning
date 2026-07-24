@@ -1,0 +1,6 @@
+{
+  "name": "Adaptive Learning Copilot Architecture & Simulator",
+  "description": "Technical architecture specification, schema design, and live interactive simulation engine for the Adaptive Learning Copilot EdTech platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
