@@ -230,4 +230,279 @@ export interface UxUserFlowStep {
   fallbackAction: string;
 }
 
+export interface TeacherUxScreenSpec {
+  id: string;
+  screenName: string;
+  screenTitle: string;
+  purpose: string;
+  estimatedComprehensionTime: string;
+  keyElements: string[];
+  states: {
+    normal: string;
+    alertPriority: string;
+    privacyAnonymized: string;
+    postOverride: string;
+  };
+  plainLanguageAuditApproach: string;
+  accessibilityAnnotations: Array<{
+    wcagCriterion: string;
+    title: string;
+    description: string;
+    ariaAttribute: string;
+  }>;
+  frTraceability: string[];
+}
+
+export interface TeacherOverrideFlowStep {
+  stepNumber: number;
+  stepTitle: string;
+  beforeState: string;
+  teacherAction: string;
+  afterState: string;
+  downstreamEffect: string;
+  auditLogGenerated: string;
+}
+
+// ==========================================
+// DIAGNOSTIC MISCONCEPTION TAXONOMY TYPES
+// ==========================================
+
+export interface MisconceptionTaxonomyItem {
+  misconceptionId: string;
+  title: string;
+  commonCoreCluster: string;
+  description: string;
+  typicalErrorSignature: string;
+  pedagogicalSource: string;
+  validationStatus: 'DRAFT_HYPOTHESIS' | 'EMPIRICALLY_VALIDATED' | 'AWAITING_FIELD_DATA';
+  sampleStudentResponse: string;
+  remediationApproach: string;
+  bktParameters: {
+    priorMastery: number; // p(L0)
+    transitRate: number;  // p(T)
+    slipRate: number;     // p(S)
+    guessRate: number;    // p(G)
+  };
+}
+
+export interface QuestionSelectionNode {
+  nodeId: string;
+  itemCode: string;
+  questionText: string;
+  mathTopic: string;
+  commonCoreStandard: string;
+  options: Array<{
+    optionId: string;
+    text: string;
+    isCorrect: boolean;
+    linkedMisconceptionId: string | 'NONE';
+    diagnosticRationale: string;
+  }>;
+  nextStepOnSuccess: string;
+  nextStepOnMisconception: Record<string, string>;
+}
+
+export interface DiagnosticConfidenceRule {
+  level: 'HIGH' | 'MODERATE' | 'LOW';
+  probabilityThreshold: string; // e.g. ">= 0.80"
+  systemClassificationAction: string;
+  learnerFacingInstruction: string;
+  teacherDashboardAlert: string;
+  auditStreamLogType: string;
+}
+
+export interface DiagnosticEdgeCaseHandling {
+  caseId: string;
+  caseName: string;
+  triggerCondition: string;
+  classificationBehavior: string;
+  fairnessSafeguard: string;
+  exampleScenario: string;
+}
+
+export interface DiagnosticTraceabilityItem {
+  logicElement: string;
+  prdRequirement: string;
+  pedagogicalOrSecuritySafeguard: string;
+  verificationMethod: string;
+}
+
+export interface DiagnosticRiskItem {
+  riskId: string;
+  category: 'PEDAGOGICAL' | 'BIAS_FAIRNESS' | 'TECHNICAL_BOUNDS' | 'DATA_VALIDITY';
+  description: string;
+  severity: 'HIGH' | 'MEDIUM' | 'LOW';
+  mitigationStrategy: string;
+  ownerRole: string;
+}
+
+export interface DiagnosticChecklistItem {
+  id: string;
+  category: 'PEDAGOGICAL' | 'BIAS_FAIRNESS' | 'BOUNDEDNESS' | 'ACCESSIBILITY' | 'DATA_INTEGRITY';
+  checkItem: string;
+  verified: boolean;
+  notes: string;
+}
+
+// ==========================================
+// QA TEST PLAN & SECURITY COVERAGE TYPES
+// ==========================================
+
+export interface QaTestCaseItem {
+  testId: string;
+  category: 'UNIT' | 'INTEGRATION' | 'EDGE_CASE' | 'ADVERSARIAL';
+  scenario: string;
+  input: string;
+  expectedOutcome: string;
+  passFailCriterion: string;
+  relatedFrOrSafeguard: string;
+}
+
+export interface AdversarialTestCaseItem {
+  testId: string;
+  threatType: 'PROMPT_INJECTION' | 'SYSTEM_PROMPT_EXFILTRATION' | 'ANSWER_CHEATING' | 'OFF_CURRICULUM_GENERATION' | 'ADAPTIVE_ENGINE_GAMING' | 'OVER_PERSONALIZATION_LOCK';
+  attackVector: string;
+  learnerInputPayload: string;
+  targetVulnerability: string;
+  expectedDefenseResponse: string;
+  objectivePassFailCriterion: string;
+  securitySeverity: 'CRITICAL' | 'HIGH' | 'MEDIUM';
+  relatedFrOrSafeguard: string;
+}
+
+export interface QaTraceabilityItem {
+  requirementId: string;
+  requirementTitle: string;
+  coveringTestIds: string[];
+  coverageStatus: 'COVERED_100%' | 'GAP_FLAGGED';
+  verificationMethod: string;
+}
+
+export interface QaRiskItem {
+  riskId: string;
+  riskTitle: string;
+  description: string;
+  isUntestable: boolean;
+  mitigationStrategy: string;
+  ownerRole: string;
+}
+
+export interface QaChecklistItem {
+  id: string;
+  category: string;
+  checkItem: string;
+  verified: boolean;
+  notes: string;
+}
+
+// ==========================================
+// SECURITY & PRIVACY COMPLIANCE REVIEW TYPES
+// ==========================================
+
+export interface ComplianceChecklistItem {
+  requirementId: string;
+  requirementTitle: string;
+  category: 'CONSENT_MINORS' | 'PII_MINIMIZATION' | 'ENCRYPTION' | 'RBAC' | 'AUDIT_INTEGRITY' | 'RETENTION_DELETION';
+  regulatoryClause: string; // e.g., 'FERPA 34 CFR § 99.30 / COPPA 16 CFR § 312.5'
+  currentStatus: 'MET' | 'PARTIAL' | 'GAP';
+  evidenceReviewed: string; // File path, code block, or config verified
+  isBlocking: boolean;
+}
+
+export interface ComplianceFindingItem {
+  findingId: string;
+  title: string;
+  severity: 'BLOCKING' | 'HIGH' | 'MEDIUM' | 'LOW';
+  affectedComponent: string;
+  regulatoryClause: string;
+  rootCause: string;
+  recommendedFix: string;
+  assignedOwnerRole: string;
+  status: 'OPEN_BLOCKER' | 'REMEDIATION_IN_PROGRESS' | 'RESOLVED';
+}
+
+export interface ComplianceTraceabilityItem {
+  findingId: string;
+  title: string;
+  prdSafeguardOrNfr: string; // e.g. Safeguard-3 / NFR-SEC-01
+  regulatoryFramework: string; // e.g. FERPA / COPPA / GDPR Art. 8
+  verificationMethod: string;
+}
+
+export interface ComplianceRiskItem {
+  riskId: string;
+  riskTitle: string;
+  threatDescription: string;
+  impactLevel: 'CRITICAL' | 'HIGH' | 'MEDIUM';
+  mitigationStrategy: string;
+  residualRisk: string;
+  ownerRole: string;
+}
+
+export interface ComplianceHumanChecklistItem {
+  id: string;
+  roleTitle: string; // e.g. Legal & Privacy Officer
+  verificationRequirement: string;
+  evidenceVerified: string;
+  signoffStatus: 'APPROVED' | 'PENDING_REMEDIATION' | 'REJECTED';
+}
+
+// ==========================================
+// STAKEHOLDER DEMO SCRIPT & PILOT READINESS TYPES
+// ==========================================
+
+export interface DemoScriptStep {
+  stepNumber: number;
+  stepId: string;
+  title: string;
+  durationSeconds: number;
+  presenterRole: 'PRODUCT_MANAGER' | 'LEAD_ENGINEER' | 'PILOT_OPERATIONS';
+  narrationScript: string;
+  expectedSystemBehavior: string;
+  safeguardDemonstrated: string; // e.g. Socratic Refusal, Teacher Override
+  safeguardType: 'SOCRATIC_SAFETY' | 'TEACHER_CONTROL' | 'AUDIT_INTEGRITY' | 'AI_DISCLOSURE' | 'OFFLINE_RESILIENCE';
+  fallbackTalkingPoint: string; // For live latency/network failure recovery
+  claimType: 'VERIFIED_IN_BUILD' | 'PROJECTED_PILOT_TARGET';
+}
+
+export interface PilotReadinessChecklistItem {
+  itemId: string;
+  category: 'TECHNICAL' | 'PEDAGOGICAL' | 'COMPLIANCE' | 'TEACHER_TRAINING';
+  requirementTitle: string;
+  description: string;
+  namedOwner: string;
+  status: 'READY' | 'NOT_READY' | 'IN_REMEDIATION';
+  verificationEvidence: string;
+}
+
+export interface DemoTraceabilityItem {
+  stepId: string;
+  stepTitle: string;
+  prdUserJourney: string; // e.g., Journey 2: Teacher Override
+  safeguardOrMetricDemonstrated: string;
+  systemCapabilityVerified: string;
+}
+
+export interface DemoRiskItem {
+  riskId: string;
+  riskTitle: string;
+  failureScenario: string;
+  impactOnDemo: 'CRITICAL' | 'HIGH' | 'MEDIUM';
+  liveMitigationScript: string;
+  technicalFallbackAction: string;
+  ownerRole: string;
+}
+
+export interface DemoHumanChecklistItem {
+  id: string;
+  roleTitle: string; // e.g. Lead Engineer, Security Reviewer
+  reviewFocusArea: string;
+  verificationEvidence: string;
+  signoffStatus: 'APPROVED' | 'PENDING_REMEDIATION' | 'REJECTED';
+}
+
+
+
+
+
 

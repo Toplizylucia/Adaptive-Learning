@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AuditLogItem, DistrictMetrics, LearnerProfile } from '../types';
 import { INITIAL_LEARNER_PROFILES } from '../data/learnerProfilesData';
+import { TeacherUxSpecView } from './TeacherUxSpecView';
 import { 
   ResponsiveContainer, 
   AreaChart, 
@@ -24,7 +25,9 @@ import {
   CheckCircle2,
   Clock,
   Zap,
-  Layers
+  Layers,
+  Sliders,
+  FileText
 } from 'lucide-react';
 
 interface TeacherDashboardViewProps {
@@ -32,6 +35,7 @@ interface TeacherDashboardViewProps {
 }
 
 export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({ auditLogs }) => {
+  const [viewMode, setViewMode] = useState<'ux_spec' | 'district_ops'>('ux_spec');
   const [selectedSchoolFilter, setSelectedSchoolFilter] = useState<string>('ALL');
 
   const districtMetrics: DistrictMetrics = {
@@ -60,40 +64,84 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({ audi
   return (
     <div className="space-y-6">
       
-      {/* Top Hero Banner */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
-          <div>
-            <div className="flex items-center space-x-2">
-              <span className="px-2.5 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold rounded-full">
-                FR-9 & FR-10 Active Monitoring
-              </span>
-              <span className="px-2.5 py-0.5 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-mono font-bold rounded-full">
-                40 Schools Connected
-              </span>
-            </div>
-            <h2 className="text-2xl font-extrabold text-white mt-2">
-              Teacher & District Operations Dashboard
-            </h2>
-            <p className="text-xs text-slate-400 mt-1">
-              Real-time learner mastery tracking, LLM daily budget consumption meter ($25/day cap across 5,000 learners), and cryptographic audit stream.
-            </p>
+      {/* Primary Mode Toggle Header */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center space-x-3">
+          <div className="p-2 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
+            <LayoutDashboard className="w-5 h-5" />
           </div>
-
-          {/* School Selector */}
           <div>
-            <select
-              value={selectedSchoolFilter}
-              onChange={(e) => setSelectedSchoolFilter(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
-            >
-              <option value="ALL">All 40 District Schools</option>
-              <option value="sch_oakridge_402">Oakridge Middle School</option>
-              <option value="sch_westlake_108">Westlake Middle Academy</option>
-              <option value="sch_riverdale_204">Riverdale Rural School</option>
-            </select>
+            <h2 className="text-base font-extrabold text-white">Teacher Dashboard Hub</h2>
+            <p className="text-xs text-slate-400">Switch between Teacher UX Specification &amp; Prototype and District Operations Control.</p>
           </div>
         </div>
+
+        <div className="flex items-center space-x-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800 text-xs">
+          <button
+            onClick={() => setViewMode('ux_spec')}
+            className={`px-4 py-2 rounded-lg font-bold transition-all flex items-center space-x-1.5 ${
+              viewMode === 'ux_spec'
+                ? 'bg-indigo-600 text-white shadow-lg'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Users className="w-4 h-4 text-purple-400" />
+            <span>Teacher UX Spec &amp; Prototype (PRD 6.2)</span>
+          </button>
+
+          <button
+            onClick={() => setViewMode('district_ops')}
+            className={`px-4 py-2 rounded-lg font-bold transition-all flex items-center space-x-1.5 ${
+              viewMode === 'district_ops'
+                ? 'bg-indigo-600 text-white shadow-lg'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Building2 className="w-4 h-4 text-cyan-400" />
+            <span>District Operations &amp; Metrics</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Render selected view */}
+      {viewMode === 'ux_spec' ? (
+        <TeacherUxSpecView />
+      ) : (
+        <div className="space-y-6">
+          {/* District Operations Content */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="px-2.5 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold rounded-full">
+                    FR-9 &amp; FR-10 Active Monitoring
+                  </span>
+                  <span className="px-2.5 py-0.5 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-mono font-bold rounded-full">
+                    40 Schools Connected
+                  </span>
+                </div>
+                <h2 className="text-2xl font-extrabold text-white mt-2">
+                  District Operations Dashboard
+                </h2>
+                <p className="text-xs text-slate-400 mt-1">
+                  Real-time learner mastery tracking, LLM daily budget consumption meter ($25/day cap across 5,000 learners), and cryptographic audit stream.
+                </p>
+              </div>
+
+              {/* School Selector */}
+              <div>
+                <select
+                  value={selectedSchoolFilter}
+                  onChange={(e) => setSelectedSchoolFilter(e.target.value)}
+                  className="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono"
+                >
+                  <option value="ALL">All 40 District Schools</option>
+                  <option value="sch_oakridge_402">Oakridge Middle School</option>
+                  <option value="sch_westlake_108">Westlake Middle Academy</option>
+                  <option value="sch_riverdale_204">Riverdale Rural School</option>
+                </select>
+              </div>
+            </div>
 
         {/* Top Metric Cards Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
@@ -301,7 +349,8 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({ audi
           </table>
         </div>
       </div>
-
     </div>
-  );
+  )}
+</div>
+);
 };

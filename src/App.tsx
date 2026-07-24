@@ -8,6 +8,10 @@ import { Header } from './components/Header';
 import { ArchitectureDocView } from './components/ArchitectureDocView';
 import { ApiSpecContractView } from './components/ApiSpecContractView';
 import { LearnerUxSpecView } from './components/LearnerUxSpecView';
+import { DiagnosticTaxonomyView } from './components/DiagnosticTaxonomyView';
+import { QaTestPlanView } from './components/QaTestPlanView';
+import { SecurityComplianceView } from './components/SecurityComplianceView';
+import { PmDemoScriptView } from './components/PmDemoScriptView';
 import { CopilotSimulatorView } from './components/CopilotSimulatorView';
 import { TeacherDashboardView } from './components/TeacherDashboardView';
 import { SchemaWorkbenchView } from './components/SchemaWorkbenchView';
@@ -16,7 +20,7 @@ import { DiagnosticResult, AuditLogItem } from './types';
 import { ShieldCheck, Cpu, Code2, Layers } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'spec' | 'api-spec' | 'ux-spec' | 'simulator' | 'teacher' | 'schemas' | 'matrix'>('spec');
+  const [activeTab, setActiveTab] = useState<'spec' | 'api-spec' | 'ux-spec' | 'diagnostic-taxonomy' | 'qa-test-plan' | 'security-compliance' | 'pm-demo' | 'simulator' | 'teacher' | 'schemas' | 'matrix'>('pm-demo');
   const [isOfflineSimulated, setIsOfflineSimulated] = useState<boolean>(false);
   const [offlineQueue, setOfflineQueue] = useState<DiagnosticResult[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>([]);
@@ -42,6 +46,10 @@ export default function App() {
         {activeTab === 'spec' && <ArchitectureDocView />}
         {activeTab === 'api-spec' && <ApiSpecContractView />}
         {activeTab === 'ux-spec' && <LearnerUxSpecView />}
+        {activeTab === 'diagnostic-taxonomy' && <DiagnosticTaxonomyView />}
+        {activeTab === 'qa-test-plan' && <QaTestPlanView />}
+        {activeTab === 'security-compliance' && <SecurityComplianceView />}
+        {activeTab === 'pm-demo' && <PmDemoScriptView />}
         {activeTab === 'simulator' && (
           <CopilotSimulatorView
             isOfflineSimulated={isOfflineSimulated}

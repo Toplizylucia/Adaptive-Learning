@@ -11,12 +11,16 @@ import {
   Sparkles,
   Layers,
   Server,
-  Users
+  Users,
+  BrainCircuit,
+  ShieldAlert,
+  Scale,
+  Presentation
 } from 'lucide-react';
 
 interface HeaderProps {
-  activeTab: 'spec' | 'api-spec' | 'ux-spec' | 'simulator' | 'teacher' | 'schemas' | 'matrix';
-  setActiveTab: (tab: 'spec' | 'api-spec' | 'ux-spec' | 'simulator' | 'teacher' | 'schemas' | 'matrix') => void;
+  activeTab: 'spec' | 'api-spec' | 'ux-spec' | 'diagnostic-taxonomy' | 'qa-test-plan' | 'security-compliance' | 'pm-demo' | 'simulator' | 'teacher' | 'schemas' | 'matrix';
+  setActiveTab: (tab: 'spec' | 'api-spec' | 'ux-spec' | 'diagnostic-taxonomy' | 'qa-test-plan' | 'security-compliance' | 'pm-demo' | 'simulator' | 'teacher' | 'schemas' | 'matrix') => void;
   isOfflineSimulated: boolean;
   setIsOfflineSimulated: (val: boolean) => void;
   offlineQueueLength: number;
@@ -91,6 +95,54 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Users className="w-4 h-4 text-purple-400" />
               <span>UX Spec</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('diagnostic-taxonomy')}
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                activeTab === 'diagnostic-taxonomy'
+                  ? 'bg-indigo-600 text-white shadow-md'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+              }`}
+            >
+              <BrainCircuit className="w-4 h-4 text-amber-400" />
+              <span>Diagnostic Spec</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('qa-test-plan')}
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                activeTab === 'qa-test-plan'
+                  ? 'bg-indigo-600 text-white shadow-md'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+              }`}
+            >
+              <ShieldAlert className="w-4 h-4 text-rose-400" />
+              <span>QA Plan</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('security-compliance')}
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                activeTab === 'security-compliance'
+                  ? 'bg-indigo-600 text-white shadow-md'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+              }`}
+            >
+              <Scale className="w-4 h-4 text-amber-400" />
+              <span>Security Compliance</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('pm-demo')}
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                activeTab === 'pm-demo'
+                  ? 'bg-indigo-600 text-white shadow-md'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+              }`}
+            >
+              <Presentation className="w-4 h-4 text-indigo-400" />
+              <span>PM Stakeholder Demo</span>
             </button>
 
             <button
@@ -201,6 +253,18 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-2 py-1 rounded ${activeTab === 'ux-spec' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
           >
             UX Spec
+          </button>
+          <button
+            onClick={() => setActiveTab('diagnostic-taxonomy')}
+            className={`px-2 py-1 rounded ${activeTab === 'diagnostic-taxonomy' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+          >
+            Diagnostic
+          </button>
+          <button
+            onClick={() => setActiveTab('qa-test-plan')}
+            className={`px-2 py-1 rounded ${activeTab === 'qa-test-plan' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+          >
+            QA Plan
           </button>
           <button
             onClick={() => setActiveTab('simulator')}
